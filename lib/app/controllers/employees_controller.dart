@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import '../models/employees_model.dart';
-import '../repositories/employees_repository.dart';
 
 class EmployeesController extends ChangeNotifier {
-  final repository = EmployeesRepository();
-
   List<EmployeesModel> employeesList = <EmployeesModel>[];
 
   int id = 1;
@@ -21,6 +19,25 @@ class EmployeesController extends ChangeNotifier {
   bool isWarningEstimatedHours = true;
   bool isWarningSquadId = true;
 
+  late Box box;
+
+  EmployeesController() {
+    _openBoxEmployees();
+  }
+
+  _openBoxEmployees() async {
+    box = await Hive.openBox<EmployeesModel>('employees');
+    await _readyEmployees();
+  }
+
+  _readyEmployees() async {
+    for (var employees in box.keys) {
+      EmployeesModel employeesModel = await box.get(employees);
+      employeesList.add(employeesModel);
+      notifyListeners();
+    }
+  }
+
   createEmployees() {
     employeesList.add(
       EmployeesModel(
@@ -30,6 +47,19 @@ class EmployeesController extends ChangeNotifier {
         squadId: int.parse(squadIdTextController.text),
       ),
     );
+
+    for (var employees in employeesList) {
+      box.put(
+        employees.id,
+        EmployeesModel(
+          id: employees.id,
+          name: employees.name,
+          estimatedHours: employees.estimatedHours,
+          squadId: employees.squadId,
+        ),
+      );
+    }
+
     notifyListeners();
   }
 

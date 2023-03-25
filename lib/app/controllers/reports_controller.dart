@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 import '../models/reports_model.dart';
@@ -19,6 +20,25 @@ class ReportsController extends ChangeNotifier {
   bool isWarningSpentHours = true;
   bool isWarningDescription = true;
 
+  late Box box;
+
+  ReportsController() {
+    _openBoxReports();
+  }
+
+  _openBoxReports() async {
+    box = await Hive.openBox<ReportsModel>('reports');
+    await _readyReports();
+  }
+
+  _readyReports() async {
+    for (var reports in box.keys) {
+      ReportsModel reportsModel = await box.get(reports);
+      reportsList.add(reportsModel);
+      notifyListeners();
+    }
+  }
+
   createReports() {
     reportsList.add(
       ReportsModel(
@@ -29,6 +49,19 @@ class ReportsController extends ChangeNotifier {
         createdAt: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       ),
     );
+
+    for (var reports in reportsList) {
+      box.put(
+        reports.id,
+        ReportsModel(
+          id: reports.id,
+          employeeId: reports.employeeId,
+          spentHours: reports.spentHours,
+          description: reports.description,
+          createdAt: reports.createdAt,
+        ),
+      );
+    }
 
     notifyListeners();
   }

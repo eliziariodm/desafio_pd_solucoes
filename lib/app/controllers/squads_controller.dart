@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 import '../models/employees_model.dart';
 import '../models/reports_model.dart';
 import '../models/squads_model.dart';
-import '../repositories/squads_repository.dart';
 
 class SquadsController extends ChangeNotifier {
-  final repository = SquadsRepository();
-
   List<SquadsModel> squadsList = <SquadsModel>[];
 
   bool isDisable = true;
@@ -33,10 +31,34 @@ class SquadsController extends ChangeNotifier {
 
   bool isWarning = false;
 
+  late Box box;
+
+  SquadsController() {
+    _openBoxSquads();
+  }
+
+  _openBoxSquads() async {
+    box = await Hive.openBox<SquadsModel>('squads');
+    await _readySquads();
+  }
+
+  _readySquads() async {
+    for (var squads in box.keys) {
+      SquadsModel squadsModel = await box.get(squads);
+      squadsList.add(squadsModel);
+      notifyListeners();
+    }
+  }
+
   createSquads() {
     squadsList.add(
       SquadsModel(id: id++, name: nameTextController.text),
     );
+
+    for (var squads in squadsList) {
+      box.put(squads.id, SquadsModel(id: squads.id, name: squads.name));
+    }
+
     notifyListeners();
   }
 
