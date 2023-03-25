@@ -60,7 +60,7 @@ class EmployeesController extends ChangeNotifier {
   validateIdSquad() {
     isWarning = false;
     isWarningSquadId = false;
-    textValidate = 'Não existe usuário com este id.';
+    textValidate = 'Não existe squad com este id.';
 
     notifyListeners();
   }

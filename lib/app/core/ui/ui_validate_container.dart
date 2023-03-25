@@ -24,6 +24,7 @@ class UiValidateContainer extends StatelessWidget {
         ),
       ),
       child: ListTile(
+        horizontalTitleGap: -3,
         leading: Icon(
           size: 27,
           Icons.warning_amber_rounded,

@@ -151,6 +151,8 @@ class SquadsController extends ChangeNotifier {
 
       sumHours(reportsList);
       averageHours(reportsList);
+    } else {
+      isWarning = true;
     }
 
     notifyListeners();
