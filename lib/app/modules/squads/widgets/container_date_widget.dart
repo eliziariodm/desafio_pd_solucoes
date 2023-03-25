@@ -15,7 +15,7 @@ class ContainerDateWidget extends StatelessWidget {
         return Column(
           children: [
             const SizedBox(height: 32),
-            squads.list.isEmpty
+            squads.auxReportsList.isEmpty
                 ? squads.isWarning
                     ? const SizedBox.shrink()
                     : UiValidateContainer(
@@ -33,24 +33,32 @@ class ContainerDateWidget extends StatelessWidget {
                       DataColumn(label: Text('Criado em')),
                     ],
                     rows: List<DataRow>.generate(
-                      squads.list.length,
-                      (index) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text(squads.auxList[index].name),
-                          ),
-                          DataCell(
-                            Text(squads.list[index].description),
-                          ),
-                          DataCell(
-                            Text(squads.list[index].spentHours.toString()),
-                          ),
-                          DataCell(
-                            Text(DateFormat('dd/MM/yyyy')
-                                .format(squads.list[index].createdAt)),
-                          ),
-                        ],
-                      ),
+                      squads.auxReportsList.length,
+                      (index) {
+                        var squadsDate = DateTime.parse(
+                            squads.auxReportsList[index].createdAt);
+
+                        var squadsStringDate =
+                            DateFormat('dd/MM/yyyy').format(squadsDate);
+
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              Text(squads.auxEmployeesList[index].name),
+                            ),
+                            DataCell(
+                              Text(squads.auxReportsList[index].description),
+                            ),
+                            DataCell(
+                              Text(squads.auxReportsList[index].spentHours
+                                  .toString()),
+                            ),
+                            DataCell(
+                              Text(squadsStringDate),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
             const SizedBox(height: 32),
@@ -72,7 +80,7 @@ class ContainerDateWidget extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             Text(
-              '${squads.average.toStringAsFixed(1)} Horas/Dia',
+              '${squads.average.round()} Horas/Dia',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),

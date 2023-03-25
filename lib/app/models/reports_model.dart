@@ -5,7 +5,7 @@ class ReportsModel {
   final int employeeId;
   final String description;
   final int spentHours;
-  final DateTime createdAt;
+  final String createdAt;
 
   ReportsModel({
     required this.id,
@@ -21,7 +21,7 @@ class ReportsModel {
       employeeId: map['employeeId'] ?? 0,
       description: map['description'] ?? '',
       spentHours: map['spentHours'] ?? 0,
-      createdAt: map['createdAt'] ?? DateTime.now(),
+      createdAt: map['createdAt'] ?? '',
     );
   }
 

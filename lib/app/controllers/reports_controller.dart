@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/reports_model.dart';
 
@@ -25,7 +26,7 @@ class ReportsController extends ChangeNotifier {
         employeeId: int.parse(employeeIdTextController.text),
         spentHours: int.parse(spentHoursTextController.text),
         description: descriptionTextController.text,
-        createdAt: DateTime.now(),
+        createdAt: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       ),
     );
 

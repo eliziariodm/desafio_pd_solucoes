@@ -25,8 +25,8 @@ class SquadsController extends ChangeNotifier {
   bool isFiltering = false;
   DateTime init = DateTime.now();
   DateTime end = DateTime.now();
-  List<EmployeesModel> auxList = <EmployeesModel>[];
-  List<ReportsModel> list = <ReportsModel>[];
+  List<EmployeesModel> auxEmployeesList = <EmployeesModel>[];
+  List<ReportsModel> auxReportsList = <ReportsModel>[];
 
   int sum = 0;
   double average = 0.0;
@@ -109,8 +109,8 @@ class SquadsController extends ChangeNotifier {
       isFiltering = true;
     }
 
-    auxList = [];
-    list = [];
+    auxEmployeesList = [];
+    auxReportsList = [];
     sum = 0;
     average = 0.0;
     isWarning = false;
@@ -119,7 +119,7 @@ class SquadsController extends ChangeNotifier {
       if (employeesModel.squadId == squadId) {
         for (var reportsModel in reportsList) {
           if (reportsModel.employeeId == employeesModel.id) {
-            filterDate(employeesModel, reportsModel, reportsList);
+            filterDate(employeesModel, reportsModel);
           }
         }
       }
@@ -131,26 +131,25 @@ class SquadsController extends ChangeNotifier {
   filterDate(
     EmployeesModel employeesModel,
     ReportsModel reportsModel,
-    List<ReportsModel> reportsList,
   ) {
-    if (reportsModel.createdAt.isAfter(init) &&
-        (reportsModel.createdAt.isBefore(end) ||
-            reportsModel.createdAt.day == end.day) &&
+    DateTime createAtDate = DateTime.parse(reportsModel.createdAt);
+
+    if ((createAtDate.isAfter(init) || createAtDate.day == init.day) &&
+        (createAtDate.isBefore(end) || createAtDate.day == end.day) &&
         init.isBefore(end)) {
-      auxList.add(employeesModel);
+      auxEmployeesList.add(employeesModel);
 
-      list.add(reportsModel);
+      auxReportsList.add(reportsModel);
 
-      sumHours(reportsList);
-      averageHours(reportsList);
-    } else if (reportsModel.createdAt.day == init.day &&
-        reportsModel.createdAt.day == end.day) {
-      auxList.add(employeesModel);
+      sumHours(auxReportsList);
+      averageHours(auxReportsList);
+    } else if (createAtDate.day == init.day && createAtDate.day == end.day) {
+      auxEmployeesList.add(employeesModel);
 
-      list.add(reportsModel);
+      auxReportsList.add(reportsModel);
 
-      sumHours(reportsList);
-      averageHours(reportsList);
+      sumHours(auxReportsList);
+      averageHours(auxReportsList);
     } else {
       isWarning = true;
     }
@@ -167,10 +166,10 @@ class SquadsController extends ChangeNotifier {
   }
 
   averageHours(List<ReportsModel> reportList) {
-    average = reportList
+    average = (reportList.length * 24) /
+        reportList
             .map((value) => value.spentHours)
-            .fold(0, (prev, spentHours) => prev + spentHours) /
-        reportList.length;
+            .fold(0, (prev, spentHours) => prev + spentHours);
 
     notifyListeners();
   }
