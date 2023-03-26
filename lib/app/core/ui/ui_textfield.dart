@@ -10,11 +10,13 @@ class UiTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final TextOverflow? overflow;
   final double? top;
   final double? bottom;
   final bool isWarning;
   final bool isDate;
   final bool isTap;
+  final bool readOnly;
 
   const UiTextField({
     Key? key,
@@ -26,11 +28,13 @@ class UiTextField extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.onTap,
+    this.overflow,
     this.top,
     this.bottom,
     this.isWarning = true,
     this.isDate = false,
     this.isTap = false,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -44,6 +48,7 @@ class UiTextField extends StatelessWidget {
         ),
         const SizedBox(height: 7),
         TextFormField(
+          readOnly: readOnly,
           cursorColor: Theme.of(context).colorScheme.surface,
           keyboardType: textInputType ?? TextInputType.name,
           inputFormatters: inputFormatters,
@@ -79,6 +84,7 @@ class UiTextField extends StatelessWidget {
             floatingLabelBehavior: FloatingLabelBehavior.never,
             label: Text(
               isWarning ? label : 'Error',
+              overflow: overflow ?? TextOverflow.clip,
               style: isWarning
                   ? Theme.of(context).textTheme.displayMedium
                   : Theme.of(context).textTheme.headlineMedium,

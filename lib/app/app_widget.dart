@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'controllers/employees_controller.dart';
 import 'controllers/reports_controller.dart';
 import 'controllers/squads_controller.dart';
+import 'core/responsiveness/screen_size.dart';
 import 'modules/employees/pages/employees_page.dart';
 import 'modules/home/pages/home_page.dart';
 import 'modules/squads/pages/squads_page.dart';
@@ -30,6 +31,9 @@ class _AppWidgetState extends State<AppWidget> {
         ChangeNotifierProvider<SquadsController>(
           create: (context) => SquadsController(),
         ),
+        Provider<ScreenSize>(
+          create: (context) => ScreenSize(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -144,8 +148,6 @@ class _AppWidgetState extends State<AppWidget> {
             indicatorSize: TabBarIndicatorSize.label,
           ),
           dataTableTheme: DataTableThemeData(
-            columnSpacing: 200,
-            horizontalMargin: 60,
             headingRowColor:
                 MaterialStateProperty.all<Color>(const Color(0xFF4263EB)),
             decoration: BoxDecoration(

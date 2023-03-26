@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/squads_controller.dart';
+import '../../../core/responsiveness/screen_size.dart';
 import '../../../core/ui/ui_validate_container.dart';
 
 class ContainerDateWidget extends StatelessWidget {
@@ -10,6 +11,8 @@ class ContainerDateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screen = Provider.of<ScreenSize>(context);
+
     return Consumer<SquadsController>(
       builder: (_, squads, __) {
         return Column(
@@ -26,6 +29,20 @@ class ContainerDateWidget extends StatelessWidget {
                         },
                       )
                 : DataTable(
+                    columnSpacing: screen.isMobile(context) ? 10 : 130,
+                    horizontalMargin: screen.isMobile(context) ? 10 : 30,
+                    headingTextStyle: TextStyle(
+                      fontSize: screen.isMobile(context) ? 12 : 16,
+                      color: const Color(0xFFFFFFFF),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Roboto',
+                    ),
+                    dataTextStyle: TextStyle(
+                      fontSize: screen.isMobile(context) ? 12 : 16,
+                      color: const Color(0xFF000000),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Roboto',
+                    ),
                     columns: const [
                       DataColumn(label: Text('Membro')),
                       DataColumn(label: Text('Descrição')),

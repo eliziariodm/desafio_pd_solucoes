@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../responsiveness/screen_size.dart';
 
 class UiValidateContainer extends StatelessWidget {
   final String textValidate;
@@ -14,6 +17,8 @@ class UiValidateContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screen = Provider.of<ScreenSize>(context);
+
     return Container(
       height: 48,
       width: width ?? 358,
@@ -32,7 +37,12 @@ class UiValidateContainer extends StatelessWidget {
         ),
         title: Text(
           textValidate,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: screen.isMobile(context)
+              ? Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.merge(const TextStyle(fontSize: 12))
+              : Theme.of(context).textTheme.bodySmall,
         ),
         trailing: InkWell(
           onTap: onTap,

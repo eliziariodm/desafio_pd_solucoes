@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../controllers/employees_controller.dart';
 import '../../../controllers/squads_controller.dart';
+import '../../../core/responsiveness/screen_size.dart';
 import '../../../core/ui/ui_button.dart';
 import '../../../core/ui/ui_textfield.dart';
 import '../../../core/ui/ui_validate_container.dart';
@@ -14,6 +15,7 @@ class EmployeesRegisterDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final squadsController = Provider.of<SquadsController>(context);
+    final screen = Provider.of<ScreenSize>(context);
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -33,83 +35,95 @@ class EmployeesRegisterDialog extends StatelessWidget {
           width: 330,
           child: Form(
             key: employees.formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                employees.isWarning
-                    ? const SizedBox.shrink()
-                    : UiValidateContainer(
-                        textValidate: employees.textValidate,
-                        onTap: employees.onClosedEmployees,
-                      ),
-                employees.isWarning
-                    ? const SizedBox.shrink()
-                    : const SizedBox(height: 44),
-                UiTextField(
-                  title: 'NOME DO USUÁRIO',
-                  label: 'Digite o nome do usuário',
-                  textEditingController: employees.nameTextController,
-                  isWarning: employees.isWarningName,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      employees.validateEmptyName(value);
-                      return '';
-                    } else {
-                      employees.validateEmptyName(value);
-                      return null;
-                    }
-                  },
-                ),
-                const SizedBox(height: 32),
-                UiTextField(
-                  title: 'HORAS ESTIMADAS DE TRABALHO',
-                  label: 'Digite a quantidade de horas',
-                  textEditingController: employees.estimatedHoursTextController,
-                  textInputType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,1}')),
-                  ],
-                  isWarning: employees.isWarningEstimatedHours,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      employees.validateEmptyEstimatedHours(value);
-                      return '';
-                    } else {
-                      employees.validateEmptyEstimatedHours(value);
-                      return null;
-                    }
-                  },
-                ),
-                const SizedBox(height: 32),
-                UiTextField(
-                  title: 'SQUAD',
-                  label: 'Digite o Id da squad',
-                  textEditingController: employees.squadIdTextController,
-                  textInputType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d+\.?\d{0,1}')),
-                  ],
-                  isWarning: employees.isWarningSquadId,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      employees.validateEmptySquadId(value);
-                      return '';
-                    } else if (int.parse(value) <= 0) {
-                      employees.validateZero();
-                      return '';
-                    } else if (!squadsController.squadsList
-                        .any((user) => user.id.toString() == value)) {
-                      employees.validateIdSquad();
-                      return '';
-                    } else {
-                      employees.validateEmptySquadId(value);
-                      return null;
-                    }
-                  },
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  employees.isWarning
+                      ? const SizedBox.shrink()
+                      : UiValidateContainer(
+                          textValidate: employees.textValidate,
+                          onTap: employees.onClosedEmployees,
+                        ),
+                  employees.isWarning
+                      ? const SizedBox.shrink()
+                      : const SizedBox(height: 44),
+                  UiTextField(
+                    title: 'NOME DO USUÁRIO',
+                    label: 'Digite o nome do usuário',
+                    textEditingController: employees.nameTextController,
+                    overflow: screen.isMobile(context)
+                        ? TextOverflow.ellipsis
+                        : TextOverflow.clip,
+                    isWarning: employees.isWarningName,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        employees.validateEmptyName(value);
+                        return '';
+                      } else {
+                        employees.validateEmptyName(value);
+                        return null;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  UiTextField(
+                    title: 'HORAS ESTIMADAS DE TRABALHO',
+                    label: 'Digite a quantidade de horas',
+                    textEditingController:
+                        employees.estimatedHoursTextController,
+                    textInputType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,1}')),
+                    ],
+                    overflow: screen.isMobile(context)
+                        ? TextOverflow.ellipsis
+                        : TextOverflow.clip,
+                    isWarning: employees.isWarningEstimatedHours,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        employees.validateEmptyEstimatedHours(value);
+                        return '';
+                      } else {
+                        employees.validateEmptyEstimatedHours(value);
+                        return null;
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  UiTextField(
+                    title: 'SQUAD',
+                    label: 'Digite o Id da squad',
+                    textEditingController: employees.squadIdTextController,
+                    textInputType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,1}')),
+                    ],
+                    overflow: screen.isMobile(context)
+                        ? TextOverflow.ellipsis
+                        : TextOverflow.clip,
+                    isWarning: employees.isWarningSquadId,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        employees.validateEmptySquadId(value);
+                        return '';
+                      } else if (int.parse(value) <= 0) {
+                        employees.validateZero();
+                        return '';
+                      } else if (!squadsController.squadsList
+                          .any((user) => user.id.toString() == value)) {
+                        employees.validateIdSquad();
+                        return '';
+                      } else {
+                        employees.validateEmptySquadId(value);
+                        return null;
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
