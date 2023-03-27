@@ -7,7 +7,6 @@ import '../models/reports_model.dart';
 class ReportsController extends ChangeNotifier {
   List<ReportsModel> reportsList = <ReportsModel>[];
 
-  int id = 1;
   TextEditingController employeeIdTextController = TextEditingController();
   TextEditingController spentHoursTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
@@ -21,6 +20,7 @@ class ReportsController extends ChangeNotifier {
   bool isWarningDescription = true;
 
   late Box box;
+  late Box boxId;
 
   ReportsController() {
     _openBoxReports();
@@ -28,6 +28,7 @@ class ReportsController extends ChangeNotifier {
 
   _openBoxReports() async {
     box = await Hive.openBox<ReportsModel>('reports');
+    boxId = await Hive.openBox<int>('idReports');
     await _readyReports();
   }
 
@@ -40,9 +41,15 @@ class ReportsController extends ChangeNotifier {
   }
 
   createReports() {
+    var id = boxId.get('idReports') ?? 0;
+
+    id = id + 1;
+
+    boxId.put('idReports', id);
+
     reportsList.add(
       ReportsModel(
-        id: id++,
+        id: id,
         employeeId: int.parse(employeeIdTextController.text),
         spentHours: int.parse(spentHoursTextController.text),
         description: descriptionTextController.text,

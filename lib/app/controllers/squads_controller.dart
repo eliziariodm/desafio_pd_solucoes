@@ -11,7 +11,6 @@ class SquadsController extends ChangeNotifier {
 
   bool isDisable = true;
 
-  int id = 1;
   TextEditingController nameTextController = TextEditingController();
 
   bool isTapInit = false;
@@ -32,6 +31,7 @@ class SquadsController extends ChangeNotifier {
   bool isWarning = false;
 
   late Box box;
+  late Box boxId;
 
   SquadsController() {
     _openBoxSquads();
@@ -39,6 +39,7 @@ class SquadsController extends ChangeNotifier {
 
   _openBoxSquads() async {
     box = await Hive.openBox<SquadsModel>('squads');
+    boxId = await Hive.openBox<int>('idSquads');
     await _readySquads();
   }
 
@@ -51,8 +52,14 @@ class SquadsController extends ChangeNotifier {
   }
 
   createSquads() {
+    var id = boxId.get('idSquads') ?? 0;
+
+    id = id + 1;
+
+    boxId.put('idSquads', id);
+
     squadsList.add(
-      SquadsModel(id: id++, name: nameTextController.text),
+      SquadsModel(id: id, name: nameTextController.text),
     );
 
     for (var squads in squadsList) {

@@ -6,7 +6,6 @@ import '../models/employees_model.dart';
 class EmployeesController extends ChangeNotifier {
   List<EmployeesModel> employeesList = <EmployeesModel>[];
 
-  int id = 1;
   TextEditingController nameTextController = TextEditingController();
   TextEditingController estimatedHoursTextController = TextEditingController();
   TextEditingController squadIdTextController = TextEditingController();
@@ -20,6 +19,7 @@ class EmployeesController extends ChangeNotifier {
   bool isWarningSquadId = true;
 
   late Box box;
+  late Box boxId;
 
   EmployeesController() {
     _openBoxEmployees();
@@ -27,6 +27,7 @@ class EmployeesController extends ChangeNotifier {
 
   _openBoxEmployees() async {
     box = await Hive.openBox<EmployeesModel>('employees');
+    boxId = await Hive.openBox<int>('idEmployees');
     await _readyEmployees();
   }
 
@@ -39,9 +40,15 @@ class EmployeesController extends ChangeNotifier {
   }
 
   createEmployees() {
+    var id = boxId.get('idEmployees') ?? 0;
+
+    id = id + 1;
+
+    boxId.put('idEmployees', id);
+
     employeesList.add(
       EmployeesModel(
-        id: id++,
+        id: id,
         name: nameTextController.text,
         estimatedHours: int.parse(estimatedHoursTextController.text),
         squadId: int.parse(squadIdTextController.text),
