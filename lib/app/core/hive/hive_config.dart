@@ -19,8 +19,5 @@ class HiveAdapters {
     Directory dir = await getApplicationSupportDirectory();
 
     await Hive.initFlutter(dir.path);
-    Hive.registerAdapter(EmployeesHiveAdapter());
-    Hive.registerAdapter(ReportsHiveAdapter());
-    Hive.registerAdapter(SquadsHiveAdapter());
   }
 }
