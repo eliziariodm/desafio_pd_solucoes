@@ -1,16 +1,48 @@
-# desafio_pd_solucoes
+# Desafio Pd Soluções
 
-A new Flutter project.
+Aplicativo Mobile e Web para o Desafio da Pd Soluções utilizando o Fluter. O aplicativo é um controle de horas para os membros da Pd Soluções.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Ambiente Flutter
 
-A few resources to get you started if this is your first Flutter project:
+Flutter 3.7.8 • channel stable
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Dart 2.19.5 • channel stable
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Packages
+
+#### Os packages utilizados foram:
+
+O [Flutter SVG](https://pub.dev/packages/flutter_svg) em sua versão mais recente, usado para mostrar as imagens em SVG na aplicação.
+
+O [Intl](https://pub.dev/packages/intl) na versão mais recente, usado para formatar as datas dentro do aplicativo.
+
+O [Hive](https://pub.dev/packages/hive) e o [Hive Flutter](https://pub.dev/packages/hive_flutter) em sua versão mais recente, usado para salvar os dados localmente, tanto para o aplicativo Mobile quanto o Web.
+
+O [Path Provider](https://pub.dev/packages/path_provider) na sua versão mais recente, usado para salvar os dados do Hive em uma pasta local no aplicativo Mobile.
+
+E o [Provider](https://pub.dev/packages/provider) também em sua versão mais recente, usado para reatividade do estado e injeção de dependência.
+
+
+## Instalação do projeto
+
+* Clone o projeto.
+
+* Abra o projeto através de sua IDE favorita.
+
+* Digite ou cole no terminal o código abaixo:
+
+```bash
+flutter pub get
+```
+* Após isso, já é possível debugar o projeto tanto no Mobile quanto na Web.
+
+* Para debugar o projeto no Mobile utilize um emulador ou um celular com o modo debugar ativado.
+
+* Para debugar o projeto na Web utilize seu navegador favorito, que pode ser selecionado em sua IDE.
+
+
+### Autor
+
+### [Daniel Eliziario](https://www.linkedin.com/in/daniel-eliziario/)
