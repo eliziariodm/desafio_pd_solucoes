@@ -195,10 +195,10 @@ class SquadsController extends ChangeNotifier {
   }
 
   averageHours(List<ReportsModel> reportList) {
-    average = (reportList.length * 24) /
-        reportList
+    average = reportList
             .map((value) => value.spentHours)
-            .fold(0, (prev, spentHours) => prev + spentHours);
+            .fold(0, (prev, spentHours) => prev + spentHours) /
+        reportList.length;
 
     notifyListeners();
   }
