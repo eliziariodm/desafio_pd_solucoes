@@ -60,7 +60,11 @@ class SquadsDataView extends StatelessWidget {
               Consumer<SquadsController>(
                 builder: (_, squads, __) {
                   return Container(
-                    height: squads.isFiltering == false ? 600 : 770,
+                    height: squads.isFiltering == false
+                        ? 600
+                        : screen.isMobile(context)
+                            ? 950
+                            : 800,
                     width: screen.isMobile(context) ? 400 : 1300,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,
